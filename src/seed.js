@@ -107,8 +107,9 @@ function seed() {
   `);
 
   for (const l of licitacoes) {
-    insertLicitacao.run({ ...l, agora });
-    for (const a of l.assinaturas) {
+    const { assinaturas: assinaturasDaLicitacao, ...campos } = l;
+    insertLicitacao.run({ ...campos, agora });
+    for (const a of assinaturasDaLicitacao) {
       insertAssinatura.run(l.id, a.nome, a.funcao, a.data);
     }
   }
