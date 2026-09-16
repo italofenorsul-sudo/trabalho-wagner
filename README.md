@@ -32,12 +32,19 @@ do navegador para uma aplicação completa com **backend em Node.js/Express** e
 
 ## Como rodar
 
-Pré-requisitos: [Node.js](https://nodejs.org) 18 ou superior.
+Pré-requisitos: [Node.js](https://nodejs.org) **22 ou superior** (o `better-sqlite3`
+v13 já traz os binários nativos prontos para Windows/Mac/Linux dentro do
+pacote — não é preciso compilador C++/Visual Studio instalado).
 
 ```bash
 npm install
 npm start
 ```
+
+> Se der erro de `node-gyp`/Visual Studio ao instalar, quase sempre é sinal
+> de que o `node_modules` ficou de uma tentativa anterior com outra versão
+> do Node. Apague a pasta `node_modules` (e o `package-lock.json`, se
+> necessário) e rode `npm install` de novo.
 
 Acesse **http://localhost:3000**.
 
