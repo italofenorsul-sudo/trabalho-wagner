@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Sistema de Licitacoes (SCL) - Prefeitura Municipal de Goiana - backend com banco de dados SQLite",
   "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.18.0"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
@@ -19,7 +23,7 @@
   "homepage": "https://github.com/italofenorsul-sudo/trabalho-wagner#readme",
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^13.0.3",
+    "better-sqlite3": "^11.10.0",
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
     "express-session": "^1.19.0"
