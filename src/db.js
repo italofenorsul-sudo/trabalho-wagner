@@ -2,6 +2,13 @@ const path = require('path');
 const fs = require('fs');
 const Database = require('better-sqlite3');
 
+// Ponto-chave de segurança 1: Prevenção de Injeção (SQL Injection).
+// Todo acesso ao banco neste projeto usa Prepared Statements
+// (db.prepare(sql).run/get/all(valores)), nunca concatenação de string.
+// Os valores enviados pelo usuário (login, filtros, formulários) trafegam
+// sempre como parâmetros (`?`) da consulta, então o SQLite os trata
+// estritamente como dado — nunca como parte do comando SQL.
+
 const DATA_DIR = path.join(__dirname, '..', 'data');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 

@@ -75,9 +75,22 @@ app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Ponto-chave de segurança 2: Gestão de Erros no Lado do Servidor.
+// O log detalhado (com stack trace, rota e método) fica só no console do
+// servidor, para o desenvolvedor investigar. O cliente/navegador recebe
+// sempre uma mensagem genérica, nunca o stack trace, o tipo de exceção ou
+// qualquer detalhe que revele a estrutura interna do banco ou da linguagem.
 app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ erro: 'Erro interno do servidor.' });
+  console.error(
+    `[${new Date().toISOString()}] Erro não tratado em ${req.method} ${req.originalUrl}:`,
+    err
+  );
+
+  if (err.type === 'entity.parse.failed' || err instanceof SyntaxError) {
+    return res.status(400).json({ erro: 'Requisição inválida.' });
+  }
+
+  res.status(500).json({ erro: 'Erro interno do servidor. Tente novamente mais tarde.' });
 });
 
 app.listen(PORT, () => {

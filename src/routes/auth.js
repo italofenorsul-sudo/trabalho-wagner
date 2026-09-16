@@ -4,6 +4,7 @@ const { randomUUID } = require('crypto');
 const db = require('../db');
 const registrarLog = require('../logs');
 const { validarEmail, validarComplexidadeSenha } = require('../validators');
+const { limitadorLogin } = require('../middleware/rateLimit');
 
 const router = express.Router();
 
@@ -47,7 +48,7 @@ function limparTentativasFalhadas(email) {
   db.prepare('DELETE FROM login_locks WHERE email = ?').run(email);
 }
 
-router.post('/registrar', (req, res) => {
+router.post('/registrar', limitadorLogin, (req, res) => {
   const { nome, email: emailBruto, senha, senhaConf, termoAceito } = req.body || {};
   const email = String(emailBruto || '').trim().toLowerCase();
   const nomeLimpo = String(nome || '').trim();
@@ -95,7 +96,7 @@ router.post('/registrar', (req, res) => {
   res.status(201).json({ usuario: usuarioPublico(user) });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', limitadorLogin, (req, res) => {
   const { email: emailBruto, senha, lembrar } = req.body || {};
   const email = String(emailBruto || '').trim().toLowerCase();
 
@@ -150,7 +151,7 @@ router.get('/me', (req, res) => {
   res.json({ usuario: usuarioPublico(req.usuarioAtual) });
 });
 
-router.post('/esqueci-senha', (req, res) => {
+router.post('/esqueci-senha', limitadorLogin, (req, res) => {
   const email = String((req.body || {}).email || '').trim().toLowerCase();
   if (!validarEmail(email)) {
     return res.status(400).json({ erro: 'Informe um endereço de e-mail válido.' });
