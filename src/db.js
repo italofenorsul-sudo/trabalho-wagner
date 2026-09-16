@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const Database = require('better-sqlite3');
+const { DatabaseSync } = require('node:sqlite');
 
 // Ponto-chave de segurança 1: Prevenção de Injeção (SQL Injection).
 // Todo acesso ao banco neste projeto usa Prepared Statements
@@ -9,14 +9,40 @@ const Database = require('better-sqlite3');
 // sempre como parâmetros (`?`) da consulta, então o SQLite os trata
 // estritamente como dado — nunca como parte do comando SQL.
 
+// Usa o módulo nativo node:sqlite (embutido no Node.js >=22, sem
+// dependência externa) em vez de um pacote com binário compilado
+// separadamente — evita qualquer necessidade de compilador C++/Visual
+// Studio na instalação, em qualquer sistema operacional.
+
 const DATA_DIR = path.join(__dirname, '..', 'data');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
 const DB_PATH = path.join(DATA_DIR, 'scl.db');
-const db = new Database(DB_PATH);
+const db = new DatabaseSync(DB_PATH);
 
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
+db.exec('PRAGMA journal_mode = WAL');
+db.exec('PRAGMA foreign_keys = ON');
+
+// Shim compatível com a API de transação do better-sqlite3, usado em
+// src/seed.js e src/routes/backup.js: db.transaction(fn)() executa fn
+// dentro de BEGIN/COMMIT, com ROLLBACK automático em caso de erro.
+db.transaction = function transaction(fn) {
+  return function (...args) {
+    db.exec('BEGIN');
+    try {
+      const resultado = fn(...args);
+      db.exec('COMMIT');
+      return resultado;
+    } catch (err) {
+      try {
+        db.exec('ROLLBACK');
+      } catch (_) {
+        // ignora falha ao desfazer, o erro original já será propagado
+      }
+      throw err;
+    }
+  };
+};
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS usuarios (

@@ -10,7 +10,8 @@ do navegador para uma aplicação completa com **backend em Node.js/Express** e
 ## Arquitetura
 
 - **Backend:** Node.js + Express (API REST em `/api/*`)
-- **Banco de dados:** SQLite (arquivo único, via `better-sqlite3`)
+- **Banco de dados:** SQLite (arquivo único, via `node:sqlite`, módulo nativo
+  embutido no Node.js — sem dependência externa compilada)
 - **Autenticação:** sessão em cookie `httpOnly` + senhas com hash `bcrypt`
 - **Front-end:** HTML/CSS/JS puro (pasta `public/`), consumindo a API via `fetch`
 
@@ -32,19 +33,19 @@ do navegador para uma aplicação completa com **backend em Node.js/Express** e
 
 ## Como rodar
 
-Pré-requisitos: [Node.js](https://nodejs.org) **22 ou superior** (o `better-sqlite3`
-v13 já traz os binários nativos prontos para Windows/Mac/Linux dentro do
-pacote — não é preciso compilador C++/Visual Studio instalado).
+Pré-requisitos: [Node.js](https://nodejs.org) **22 ou superior**. O banco de
+dados usa o módulo nativo `node:sqlite`, embutido no próprio Node.js — não
+existe nenhuma dependência com binário compilado (nada de `node-gyp`,
+compilador C++ ou Visual Studio necessário em nenhum sistema operacional).
 
 ```bash
 npm install
 npm start
 ```
 
-> Se der erro de `node-gyp`/Visual Studio ao instalar, quase sempre é sinal
-> de que o `node_modules` ficou de uma tentativa anterior com outra versão
-> do Node. Apague a pasta `node_modules` (e o `package-lock.json`, se
-> necessário) e rode `npm install` de novo.
+Ao rodar, é normal aparecer um aviso do tipo
+`ExperimentalWarning: SQLite is an experimental feature` — é só um aviso do
+Node.js sobre esse módulo nativo, não afeta o funcionamento do sistema.
 
 Acesse **http://localhost:3000**.
 
@@ -94,7 +95,7 @@ O schema completo está em `src/db.js`.
 
 ### 1. Prevenção de Injeção (SQL Injection)
 Todo acesso ao banco usa **Prepared Statements** (`db.prepare(sql).run/get/all(valores)`
-do `better-sqlite3`), nunca concatenação de string. O que o usuário digita
+do `node:sqlite`), nunca concatenação de string. O que o usuário digita
 (login, filtros de busca, formulários) trafega sempre como parâmetro (`?`) da
 consulta — o SQLite trata estritamente como **dado**, nunca como comando.
 Ver `src/db.js` e todas as rotas em `src/routes/`.
