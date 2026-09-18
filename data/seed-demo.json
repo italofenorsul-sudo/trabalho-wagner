@@ -1,0 +1,55 @@
+{
+  "_observacao": "Cópia de referência dos dados de demonstração. A aplicação NÃO carrega este arquivo em tempo de execução (evita bloqueio de fetch() local via file://) — os mesmos dados são gerados por código em src/app.js, função restaurarDadosIniciaisSeed(), na primeira vez que a página é aberta.",
+  "usuarios": [
+    {
+      "id": "usr-admin",
+      "nome": "Administrador Geral",
+      "email": "admin@goiana.pe.gov.br",
+      "senha": "Admin@123",
+      "perfil": "admin",
+      "nivelAcesso": "completo"
+    },
+    {
+      "id": "usr-completo",
+      "nome": "João Silva (Acesso Completo)",
+      "email": "completo@exemplo.com",
+      "senha": "Usuario@123",
+      "perfil": "comum",
+      "nivelAcesso": "completo"
+    },
+    {
+      "id": "usr-restrito",
+      "nome": "Maria Souza (Acesso Restrito)",
+      "email": "restrito@exemplo.com",
+      "senha": "Usuario@123",
+      "perfil": "comum",
+      "nivelAcesso": "restrito"
+    }
+  ],
+  "licitacoes": [
+    {
+      "id": "lic-001",
+      "numero": "PE-001/2026",
+      "ano": 2026,
+      "processo": "PA-012/2026",
+      "modalidade": "Pregão Eletrônico",
+      "objeto": "Aquisição de gêneros alimentícios para atendimento ao programa de merenda escolar do município de Goiana.",
+      "orgao": "Secretaria Municipal de Educação",
+      "situacao": "Aberta",
+      "valorEstimado": 1250000.00,
+      "visivelComum": "sim"
+    },
+    {
+      "id": "lic-002",
+      "numero": "CC-002/2026",
+      "ano": 2026,
+      "processo": "PA-045/2026",
+      "modalidade": "Concorrência",
+      "objeto": "Reforma e ampliação da Unidade Básica de Saúde (UBS) do distrito de Tejucupapo.",
+      "orgao": "Secretaria de Infraestrutura e Obras",
+      "situacao": "Em Andamento",
+      "valorEstimado": 890000.50,
+      "visivelComum": "sim"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "scl-goiana",
+  "version": "1.0.0",
+  "description": "Sistema de Licitacoes (SCL) - Prefeitura Municipal de Goiana - aplicacao front-end pura (HTML/CSS/JS), sem dependencias externas",
+  "main": "src/index.html",
+  "dependencies": {},
+  "devDependencies": {},
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/italofenorsul-sudo/trabalho-wagner.git"
+  }
+}
