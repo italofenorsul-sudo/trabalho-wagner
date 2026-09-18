@@ -23,6 +23,14 @@ const db = new DatabaseSync(DB_PATH);
 db.exec('PRAGMA journal_mode = WAL');
 db.exec('PRAGMA foreign_keys = ON');
 
+// Com balanceamento de carga (vários processos, cada um com sua própria
+// conexão ao mesmo arquivo de banco), é normal dois processos tentarem
+// escrever quase ao mesmo tempo. Sem isso, o SQLite recusaria a segunda
+// tentativa na hora (erro "database is busy"). Com isso, ele espera até
+// 5 segundos tentando de novo antes de desistir — na prática, nunca chega
+// a falhar por causa disso.
+db.exec('PRAGMA busy_timeout = 5000');
+
 // Shim compatível com a API de transação do better-sqlite3, usado em
 // src/seed.js e src/routes/backup.js: db.transaction(fn)() executa fn
 // dentro de BEGIN/COMMIT, com ROLLBACK automático em caso de erro.
