@@ -286,6 +286,58 @@
             font-size: 0.9rem;
         }
 
+        /* Overlay de Carregamento (Feedback de Lentidão / Defensive UI) */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .loading-spinner {
+            width: 42px;
+            height: 42px;
+            border: 4px solid rgba(255,255,255,0.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .loading-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Toasts de Sistema (erros, avisos) - Defensive UI */
+        #toast-area {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+        }
+        .toast {
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            font-size: 0.85rem;
+            color: white;
+            animation: toast-in 0.2s ease-out;
+        }
+        .toast-erro { background: var(--danger); }
+        .toast-aviso { background: var(--warning); }
+        @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
         /* Responsividade */
         @media (max-width: 768px) {
             #app-layout { flex-direction: column; height: auto; overflow: visible; }
@@ -336,12 +388,12 @@
                 <form id="form-login" onsubmit="event.preventDefault(); executarLogin();" autocomplete="off">
                     <div class="form-group">
                         <label for="login-email">E-mail ou Usuário</label>
-                        <input type="text" id="login-email" class="form-control" required placeholder="seu.email@goiana.pe.gov.br" autocomplete="username">
+                        <input type="text" id="login-email" class="form-control" required maxlength="150" placeholder="seu.email@goiana.pe.gov.br" autocomplete="username">
                     </div>
                     <div class="form-group">
                         <label for="login-senha">Senha</label>
                         <div style="position: relative;">
-                            <input type="password" id="login-senha" class="form-control" required placeholder="••••••••" autocomplete="current-password">
+                            <input type="password" id="login-senha" class="form-control" required maxlength="72" placeholder="••••••••" autocomplete="current-password">
                             <button type="button" onclick="alternarVisibilidadeSenha('login-senha')" style="position: absolute; right: 8px; top: 10px; background: none; border: none; cursor: pointer; font-size: 0.9rem;" aria-label="Mostrar/Ocultar Senha">👁️</button>
                         </div>
                     </div>
@@ -351,30 +403,34 @@
                         </label>
                         <a href="#" onclick="abrirEsqueciSenha(); return false;" style="font-size: 0.8rem; color: var(--primary); font-weight: 600;">Esqueci a senha</a>
                     </div>
-                    <button type="submit" class="btn btn-accent" style="width: 100%;">Entrar no Sistema</button>
+                    <button type="submit" class="btn btn-accent" id="btn-login" style="width: 100%;">Entrar no Sistema</button>
                 </form>
 
                 <!-- FORMULÁRIO DE CADASTRO -->
                 <form id="form-cadastro" class="hidden" onsubmit="event.preventDefault(); executarCadastro();" autocomplete="off">
                     <div class="form-group">
                         <label for="cad-nome">Nome Completo</label>
-                        <input type="text" id="cad-nome" class="form-control" required placeholder="Digite seu nome completo">
+                        <input type="text" id="cad-nome" class="form-control" required maxlength="100" placeholder="Digite seu nome completo">
                     </div>
                     <div class="form-group">
                         <label for="cad-email">E-mail</label>
-                        <input type="email" id="cad-email" class="form-control" required placeholder="seu.email@exemplo.com">
+                        <input type="email" id="cad-email" class="form-control" required maxlength="150" placeholder="seu.email@exemplo.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="cad-telefone">Telefone (opcional)</label>
+                        <input type="tel" id="cad-telefone" class="form-control" maxlength="15" inputmode="numeric" placeholder="(00) 00000-0000" oninput="aplicarMascaraTelefone(this)">
                     </div>
                     <div class="form-group">
                         <label for="cad-senha">Senha</label>
                         <div style="position: relative;">
-                            <input type="password" id="cad-senha" class="form-control" required placeholder="••••••••" autocomplete="new-password">
+                            <input type="password" id="cad-senha" class="form-control" required maxlength="72" placeholder="••••••••" autocomplete="new-password">
                             <button type="button" onclick="alternarVisibilidadeSenha('cad-senha')" style="position: absolute; right: 8px; top: 10px; background: none; border: none; cursor: pointer; font-size: 0.9rem;" aria-label="Mostrar/Ocultar Senha">👁️</button>
                         </div>
                         <div class="password-hint">Mínimo de 8 caracteres, contendo letra maiúscula, minúscula, número e símbolo (@$!%*?&#._-).</div>
                     </div>
                     <div class="form-group" style="margin-bottom: 16px;">
                         <label for="cad-senha-conf">Confirmar Senha</label>
-                        <input type="password" id="cad-senha-conf" class="form-control" required placeholder="••••••••" autocomplete="new-password">
+                        <input type="password" id="cad-senha-conf" class="form-control" required maxlength="72" placeholder="••••••••" autocomplete="new-password">
                     </div>
                     
                     <!-- ACEITE DOS TERMOS DE USO E POLÍTICA DE PRIVACIDADE -->
@@ -385,7 +441,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn btn-accent" style="width: 100%;">Finalizar Cadastro</button>
+                    <button type="submit" class="btn btn-accent" id="btn-cadastro" style="width: 100%;">Finalizar Cadastro</button>
                 </form>
             </div>
         </div>
@@ -655,7 +711,7 @@
                 <form onsubmit="event.preventDefault(); solicitarRedefinicaoSenha();">
                     <div class="form-group">
                         <label for="reset-email">E-mail Cadastrado</label>
-                        <input type="email" id="reset-email" class="form-control" required placeholder="seu.email@exemplo.com">
+                        <input type="email" id="reset-email" class="form-control" required maxlength="150" placeholder="seu.email@exemplo.com">
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Solicitar Redefinição</button>
                 </form>
@@ -699,7 +755,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lic-num">Número da Licitação</label>
-                            <input type="text" id="lic-num" class="form-control" required placeholder="Ex: PE-005/2026">
+                            <input type="text" id="lic-num" class="form-control" required maxlength="30" placeholder="Ex: PE-005/2026">
                         </div>
                         <div class="form-group">
                             <label for="lic-ano">Ano</label>
@@ -709,7 +765,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lic-processo">Processo Administrativo</label>
-                            <input type="text" id="lic-processo" class="form-control" required placeholder="Ex: PA-1020/2026">
+                            <input type="text" id="lic-processo" class="form-control" required maxlength="30" placeholder="Ex: PA-1020/2026">
                         </div>
                         <div class="form-group">
                             <label for="lic-modalidade">Modalidade</label>
@@ -723,12 +779,13 @@
                     </div>
                     <div class="form-group">
                         <label for="lic-objeto">Objeto Resumido</label>
-                        <textarea id="lic-objeto" class="form-control" rows="2" required></textarea>
+                        <textarea id="lic-objeto" class="form-control" rows="2" required maxlength="500" oninput="atualizarContador('lic-objeto', 'contador-lic-objeto')"></textarea>
+                        <div class="password-hint text-right"><span id="contador-lic-objeto">0</span>/500 caracteres</div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lic-orgao">Secretaria / Órgão Responsável</label>
-                            <input type="text" id="lic-orgao" class="form-control" required placeholder="Ex: Secretaria de Saúde">
+                            <input type="text" id="lic-orgao" class="form-control" required maxlength="150" placeholder="Ex: Secretaria de Saúde">
                         </div>
                         <div class="form-group">
                             <label for="lic-valor">Valor Estimado (R$)</label>
@@ -766,9 +823,10 @@
                     </div>
                     <div class="form-group">
                         <label for="lic-conteudo">Conteúdo Integral do Documento (Confidencial)</label>
-                        <textarea id="lic-conteudo" class="form-control" rows="4" placeholder="Insira o texto integral do edital..."></textarea>
+                        <textarea id="lic-conteudo" class="form-control" rows="4" maxlength="5000" oninput="atualizarContador('lic-conteudo', 'contador-lic-conteudo')" placeholder="Insira o texto integral do edital..."></textarea>
+                        <div class="password-hint text-right"><span id="contador-lic-conteudo">0</span>/5000 caracteres</div>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar Licitação</button>
+                    <button type="submit" class="btn btn-primary" id="btn-salvar-licitacao" style="width: 100%;">Salvar Licitação</button>
                 </form>
             </div>
         </div>
@@ -786,15 +844,19 @@
                     <input type="hidden" id="usr-id">
                     <div class="form-group">
                         <label for="usr-nome">Nome Completo</label>
-                        <input type="text" id="usr-nome" class="form-control" required>
+                        <input type="text" id="usr-nome" class="form-control" required maxlength="100">
                     </div>
                     <div class="form-group">
                         <label for="usr-email">E-mail</label>
-                        <input type="email" id="usr-email" class="form-control" required>
+                        <input type="email" id="usr-email" class="form-control" required maxlength="150">
+                    </div>
+                    <div class="form-group">
+                        <label for="usr-telefone">Telefone (opcional)</label>
+                        <input type="tel" id="usr-telefone" class="form-control" maxlength="15" inputmode="numeric" placeholder="(00) 00000-0000" oninput="aplicarMascaraTelefone(this)">
                     </div>
                     <div class="form-group">
                         <label for="usr-senha">Senha (deixe em branco para não alterar)</label>
-                        <input type="password" id="usr-senha" class="form-control" placeholder="••••••••" autocomplete="new-password">
+                        <input type="password" id="usr-senha" class="form-control" maxlength="72" placeholder="••••••••" autocomplete="new-password">
                         <div class="password-hint">Ao alterar, exija no mínimo 8 caracteres com letras maiúsculas, minúsculas, números e símbolos.</div>
                     </div>
                     <div class="form-row">
@@ -820,9 +882,17 @@
                             <option value="bloqueado">Bloqueado</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar Alterações</button>
+                    <button type="submit" class="btn btn-primary" id="btn-salvar-usuario" style="width: 100%;">Salvar Alterações</button>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <!-- Overlay de Carregamento (feedback visual em ações que processam dados) -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <span id="loading-mensagem">Processando sua solicitação...</span>
         </div>
     </div>
 
@@ -881,6 +951,70 @@
         function sanitizeId(id) {
             return String(id || '').replace(/[^a-zA-Z0-9_-]/g, '');
         }
+
+        /* --- MÁSCARA DE ENTRADA (Telefone) --- */
+        function aplicarMascaraTelefone(input) {
+            let digitos = input.value.replace(/\D/g, '').slice(0, 11);
+            if (digitos.length > 10) {
+                input.value = digitos.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3').replace(/-$/, '');
+            } else if (digitos.length > 5) {
+                input.value = digitos.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3').replace(/-$/, '');
+            } else if (digitos.length > 2) {
+                input.value = digitos.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+            } else if (digitos.length > 0) {
+                input.value = `(${digitos}`;
+            } else {
+                input.value = '';
+            }
+        }
+
+        /* --- CONTADOR DE CARACTERES (Limite de Caracteres) --- */
+        function atualizarContador(inputId, contadorId) {
+            const campo = document.getElementById(inputId);
+            const contador = document.getElementById(contadorId);
+            if (campo && contador) contador.innerText = campo.value.length;
+        }
+
+        /* --- FEEDBACK DE CARREGAMENTO (Resiliência e Feedback / Defensive UI) --- */
+        function mostrarCarregando(mensagem) {
+            document.getElementById('loading-mensagem').innerText = mensagem || 'Processando sua solicitação...';
+            document.getElementById('loading-overlay').classList.remove('hidden');
+        }
+
+        function ocultarCarregando() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+
+        function aguardar(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        /* --- TOASTS DE SISTEMA (avisos não-bloqueantes) --- */
+        function mostrarToast(mensagem, tipo = 'erro') {
+            const area = document.getElementById('toast-area');
+            if (!area) return;
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${tipo}`;
+            toast.innerText = mensagem;
+            area.appendChild(toast);
+            setTimeout(() => toast.remove(), 6000);
+        }
+
+        /* --- PÁGINAS DE ERRO CUSTOMIZADAS (Resiliência e Feedback) ---
+           Nunca exibimos ao usuário o erro técnico/stack trace: ele fica
+           apenas no console (para o desenvolvedor). O usuário vê só um
+           aviso amigável e genérico. */
+        window.addEventListener('error', (event) => {
+            console.error('Erro não tratado capturado:', event.error || event.message);
+            mostrarToast('Ocorreu um erro inesperado. Se o problema persistir, recarregue a página.', 'erro');
+            ocultarCarregando();
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Promise rejeitada sem tratamento:', event.reason);
+            mostrarToast('Não foi possível concluir a operação. Tente novamente.', 'erro');
+            ocultarCarregando();
+        });
 
         function validarEmail(email) {
             const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -1126,6 +1260,7 @@
         async function executarCadastro() {
             const nome = document.getElementById('cad-nome').value.trim();
             const email = document.getElementById('cad-email').value.trim().toLowerCase();
+            const telefone = document.getElementById('cad-telefone').value.trim();
             const senha = document.getElementById('cad-senha').value;
             const senhaConf = document.getElementById('cad-senha-conf').value;
             const termoAceito = document.getElementById('cad-termo').checked;
@@ -1161,12 +1296,16 @@
                 return;
             }
 
+            mostrarCarregando('Criando sua conta...');
+            document.getElementById('btn-cadastro').disabled = true;
+
             const hashedSenha = await hashPassword(senha);
 
             const novoUsuario = {
                 id: 'usr-' + Date.now(),
                 nome: escapeHTML(nome),
                 email: email,
+                telefone: escapeHTML(telefone),
                 senhaHash: hashedSenha,
                 perfil: 'comum',
                 nivelAcesso: 'restrito',
@@ -1197,6 +1336,8 @@
             atualizarInterfaceUsuario();
             navegarPara('dashboard');
 
+            ocultarCarregando();
+            document.getElementById('btn-cadastro').disabled = false;
             alert(`Bem-vindo ao SCL, ${novoUsuario.nome}! Sua conta foi cadastrada com sucesso e os Termos de Uso foram registrados.`);
         }
 
@@ -1217,10 +1358,15 @@
                 return;
             }
 
+            mostrarCarregando('Autenticando...');
+            document.getElementById('btn-login').disabled = true;
+
             const hashInput = await hashPassword(senhaInput);
             const user = state.users.find(u => u.email.toLowerCase() === emailInput && u.senhaHash === hashInput);
 
             if (!user) {
+                ocultarCarregando();
+                document.getElementById('btn-login').disabled = false;
                 registrarTentativaFalhada(emailInput);
                 alert('Credenciais incorretas. Verifique e tente novamente.');
                 registrarLog(emailInput, 'Tentativa de Login Falhada', 'Falha', 'Senha incorreta ou usuário inexistente.');
@@ -1228,6 +1374,8 @@
             }
 
             if (user.status === 'bloqueado') {
+                ocultarCarregando();
+                document.getElementById('btn-login').disabled = false;
                 alert('Esta conta de usuário encontra-se bloqueada. Entre em contato com a administração.');
                 registrarLog(emailInput, 'Tentativa de Login Usuário Bloqueado', 'Falha', 'Acesso negado por status inativo/bloqueado.');
                 return;
@@ -1250,6 +1398,9 @@
 
             atualizarInterfaceUsuario();
             navegarPara('dashboard');
+
+            ocultarCarregando();
+            document.getElementById('btn-login').disabled = false;
         }
 
         function verificarSessao() {
@@ -1491,8 +1642,12 @@
             document.getElementById('modal-licitacao-form').classList.remove('hidden');
         }
 
-        function salvarLicitacao() {
+        async function salvarLicitacao() {
             if (!verificarPermissaoAdmin()) return;
+            mostrarCarregando('Salvando licitação...');
+            document.getElementById('btn-salvar-licitacao').disabled = true;
+            await aguardar(300);
+
             const id = document.getElementById('lic-id').value;
 
             const newBid = {
@@ -1523,6 +1678,8 @@
             fecharModais();
             renderizarLicitacoes();
             registrarLog(state.currentUser.email, 'Gravou Licitação', 'Sucesso', `Registro ${newBid.numero}`);
+            ocultarCarregando();
+            document.getElementById('btn-salvar-licitacao').disabled = false;
             alert('Licitação gravada com sucesso!');
         }
 
@@ -1573,6 +1730,7 @@
             document.getElementById('usr-id').value = user.id;
             document.getElementById('usr-nome').value = user.nome;
             document.getElementById('usr-email').value = user.email;
+            document.getElementById('usr-telefone').value = user.telefone || '';
             document.getElementById('usr-perfil').value = user.perfil;
             document.getElementById('usr-nivel').value = user.nivelAcesso;
             document.getElementById('usr-status').value = user.status;
@@ -1586,6 +1744,7 @@
             if (!verificarPermissaoAdmin()) return;
             const id = document.getElementById('usr-id').value;
             const email = document.getElementById('usr-email').value.trim().toLowerCase();
+            const telefone = document.getElementById('usr-telefone').value.trim();
             const senha = document.getElementById('usr-senha').value;
 
             if (!validarEmail(email)) {
@@ -1598,6 +1757,10 @@
                 return;
             }
 
+            mostrarCarregando('Salvando usuário...');
+            document.getElementById('btn-salvar-usuario').disabled = true;
+            await aguardar(300);
+
             if (id) {
                 const safeId = sanitizeId(id);
                 const idx = state.users.findIndex(u => u.id === safeId);
@@ -1605,6 +1768,7 @@
                     const user = state.users[idx];
                     user.nome = escapeHTML(document.getElementById('usr-nome').value.trim());
                     user.email = email;
+                    user.telefone = escapeHTML(telefone);
                     user.perfil = document.getElementById('usr-perfil').value;
                     user.nivelAcesso = document.getElementById('usr-nivel').value;
                     user.status = document.getElementById('usr-status').value;
@@ -1615,6 +1779,8 @@
                 }
             } else {
                 if (!senha) {
+                    ocultarCarregando();
+                    document.getElementById('btn-salvar-usuario').disabled = false;
                     alert('Para novos cadastros de usuários, a senha é obrigatória.');
                     return;
                 }
@@ -1622,6 +1788,7 @@
                     id: 'usr-' + Date.now(),
                     nome: escapeHTML(document.getElementById('usr-nome').value.trim()),
                     email: email,
+                    telefone: escapeHTML(telefone),
                     senhaHash: await hashPassword(senha),
                     perfil: document.getElementById('usr-perfil').value,
                     nivelAcesso: document.getElementById('usr-nivel').value,
@@ -1636,6 +1803,8 @@
             fecharModais();
             renderizarUsuarios();
             registrarLog(state.currentUser.email, 'Alteração de Usuário', 'Sucesso', `Usuário ${email}`);
+            ocultarCarregando();
+            document.getElementById('btn-salvar-usuario').disabled = false;
             alert('Cadastro de usuário atualizado com sucesso!');
         }
 
