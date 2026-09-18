@@ -51,12 +51,12 @@
                 <form id="form-login" onsubmit="event.preventDefault(); executarLogin();" autocomplete="off">
                     <div class="form-group">
                         <label for="login-email">E-mail ou Usuário</label>
-                        <input type="text" id="login-email" class="form-control" required maxlength="150" placeholder="seu.email@goiana.pe.gov.br" autocomplete="username">
+                        <input type="text" id="login-email" class="form-control" required maxlength="60" placeholder="seu.email@goiana.pe.gov.br" autocomplete="username">
                     </div>
                     <div class="form-group">
                         <label for="login-senha">Senha</label>
                         <div style="position: relative;">
-                            <input type="password" id="login-senha" class="form-control" required maxlength="72" placeholder="••••••••" autocomplete="current-password">
+                            <input type="password" id="login-senha" class="form-control" required maxlength="60" placeholder="••••••••" autocomplete="current-password">
                             <button type="button" onclick="alternarVisibilidadeSenha('login-senha')" style="position: absolute; right: 8px; top: 10px; background: none; border: none; cursor: pointer; font-size: 0.9rem;" aria-label="Mostrar/Ocultar Senha">👁️</button>
                         </div>
                     </div>
@@ -73,11 +73,11 @@
                 <form id="form-cadastro" class="hidden" onsubmit="event.preventDefault(); executarCadastro();" autocomplete="off">
                     <div class="form-group">
                         <label for="cad-nome">Nome Completo</label>
-                        <input type="text" id="cad-nome" class="form-control" required maxlength="100" placeholder="Digite seu nome completo">
+                        <input type="text" id="cad-nome" class="form-control" required maxlength="60" placeholder="Digite seu nome completo">
                     </div>
                     <div class="form-group">
                         <label for="cad-email">E-mail</label>
-                        <input type="email" id="cad-email" class="form-control" required maxlength="150" placeholder="seu.email@exemplo.com">
+                        <input type="email" id="cad-email" class="form-control" required maxlength="60" placeholder="seu.email@exemplo.com">
                     </div>
                     <div class="form-group">
                         <label for="cad-telefone">Telefone (opcional)</label>
@@ -86,14 +86,14 @@
                     <div class="form-group">
                         <label for="cad-senha">Senha</label>
                         <div style="position: relative;">
-                            <input type="password" id="cad-senha" class="form-control" required maxlength="72" placeholder="••••••••" autocomplete="new-password">
+                            <input type="password" id="cad-senha" class="form-control" required maxlength="60" placeholder="••••••••" autocomplete="new-password">
                             <button type="button" onclick="alternarVisibilidadeSenha('cad-senha')" style="position: absolute; right: 8px; top: 10px; background: none; border: none; cursor: pointer; font-size: 0.9rem;" aria-label="Mostrar/Ocultar Senha">👁️</button>
                         </div>
                         <div class="password-hint">Mínimo de 8 caracteres, contendo letra maiúscula, minúscula, número e símbolo (@$!%*?&#._-).</div>
                     </div>
                     <div class="form-group" style="margin-bottom: 16px;">
                         <label for="cad-senha-conf">Confirmar Senha</label>
-                        <input type="password" id="cad-senha-conf" class="form-control" required maxlength="72" placeholder="••••••••" autocomplete="new-password">
+                        <input type="password" id="cad-senha-conf" class="form-control" required maxlength="60" placeholder="••••••••" autocomplete="new-password">
                     </div>
                     
                     <!-- ACEITE DOS TERMOS DE USO E POLÍTICA DE PRIVACIDADE -->
