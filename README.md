@@ -51,6 +51,31 @@ aberta (dados de demonstração/seed).
   alterações, exclusões)
 - Exportação/importação de backup em JSON e restauração dos dados padrão
 
+## Recursos de segurança e UX no front-end
+
+- **Limite de caracteres** (`maxlength`) em todos os campos de texto, e
+  contador de caracteres nos campos maiores (objeto e conteúdo integral da
+  licitação) — evita envio de volumes de dados desnecessariamente grandes.
+- **Campos obrigatórios** (`required`) em todo formulário que precisa de
+  dado para funcionar, garantindo consistência antes de processar.
+- **Máscara de entrada** no campo de telefone (formata automaticamente como
+  `(00) 00000-0000` enquanto o usuário digita).
+- **Tipagem de inputs** (`type="email"`, `type="number"`, `type="tel"`,
+  `type="date"`) para o navegador validar o formato antes do envio.
+- **Feedback de carregamento**: um overlay com spinner aparece durante
+  ações que processam dados (login, cadastro, salvar licitação/usuário),
+  desabilitando o botão para evitar cliques repetidos.
+- **Página de erro customizada** (`404.html`) para quando a aplicação é
+  publicada em um servidor estático e alguém acessa um link inválido.
+- **Tratamento de erros no front-end**: um handler global captura qualquer
+  erro de JavaScript não tratado e mostra um aviso genérico e amigável
+  (toast) — o erro técnico completo (stack trace) fica só no console do
+  navegador, nunca é exposto na tela para o usuário.
+- **CSP (Content Security Policy)** configurada via `<meta>` no `<head>`,
+  restringindo de onde scripts/estilos podem ser carregados.
+- **Proteção contra XSS**: toda informação vinda do usuário passa por
+  `escapeHTML()` antes de ser inserida na tela.
+
 ## Observações
 
 Como é uma aplicação client-only (sem servidor), os dados ficam apenas no
