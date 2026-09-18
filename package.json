@@ -1,13 +1,30 @@
 {
   "name": "scl-goiana",
   "version": "1.0.0",
-  "description": "Sistema de Licitacoes (SCL) - Prefeitura Municipal de Goiana - aplicacao front-end pura (HTML/CSS/JS), sem dependencias externas",
-  "main": "src/index.html",
-  "dependencies": {},
-  "devDependencies": {},
-  "license": "ISC",
+  "description": "Sistema de Licitacoes (SCL) - Prefeitura Municipal de Goiana - backend Node.js/Express com banco de dados SQLite (node:sqlite)",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node server/seed.js --force"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/italofenorsul-sudo/trabalho-wagner.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/italofenorsul-sudo/trabalho-wagner/issues"
+  },
+  "homepage": "https://github.com/italofenorsul-sudo/trabalho-wagner#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "express-session": "^1.19.0"
   }
 }

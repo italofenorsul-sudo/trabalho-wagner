@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <title>SCL - Prefeitura Municipal de Goiana</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -15,7 +11,7 @@
     <!-- BARRA SUPERIOR INSTITUCIONAL -->
     <div class="top-utility-bar">
         <div class="nav-links">
-            <span>Acessibilidade</span> | 
+            <span>Acessibilidade</span> |
             <span>Contraste</span>
         </div>
         <div>
@@ -66,7 +62,7 @@
                         </label>
                         <a href="#" onclick="abrirEsqueciSenha(); return false;" style="font-size: 0.8rem; color: var(--primary); font-weight: 600;">Esqueci a senha</a>
                     </div>
-                    <button type="submit" class="btn btn-accent" id="btn-login" style="width: 100%;">Entrar no Sistema</button>
+                    <button type="submit" class="btn btn-accent" style="width: 100%;">Entrar no Sistema</button>
                 </form>
 
                 <!-- FORMULÁRIO DE CADASTRO -->
@@ -80,10 +76,6 @@
                         <input type="email" id="cad-email" class="form-control" required maxlength="60" placeholder="seu.email@exemplo.com">
                     </div>
                     <div class="form-group">
-                        <label for="cad-telefone">Telefone (opcional)</label>
-                        <input type="tel" id="cad-telefone" class="form-control" maxlength="15" inputmode="numeric" placeholder="(00) 00000-0000" oninput="aplicarMascaraTelefone(this)">
-                    </div>
-                    <div class="form-group">
                         <label for="cad-senha">Senha</label>
                         <div style="position: relative;">
                             <input type="password" id="cad-senha" class="form-control" required maxlength="60" placeholder="••••••••" autocomplete="new-password">
@@ -95,7 +87,7 @@
                         <label for="cad-senha-conf">Confirmar Senha</label>
                         <input type="password" id="cad-senha-conf" class="form-control" required maxlength="60" placeholder="••••••••" autocomplete="new-password">
                     </div>
-                    
+
                     <!-- ACEITE DOS TERMOS DE USO E POLÍTICA DE PRIVACIDADE -->
                     <div class="form-group" style="margin-bottom: 16px;">
                         <label style="font-weight: normal; font-size: 0.8rem; cursor: pointer; display: flex; align-items: flex-start; gap: 8px;">
@@ -104,7 +96,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn btn-accent" id="btn-cadastro" style="width: 100%;">Finalizar Cadastro</button>
+                    <button type="submit" class="btn btn-accent" style="width: 100%;">Finalizar Cadastro</button>
                 </form>
             </div>
         </div>
@@ -309,20 +301,19 @@
 
                 <!-- SEÇÃO 5: CONFIGURAÇÕES -->
                 <section id="sec-config" class="view-section hidden">
-                    <h2>Configurações do Sistema e Backup Seguro</h2>
+                    <h2>Configurações do Sistema e Backup</h2>
                     <br>
                     <div class="card">
-                        <h3>Gestão de Dados Locais Criptografados e Sanitizados</h3>
+                        <h3>Gestão do Banco de Dados</h3>
                         <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 16px;">
-                            Exporte ou importe a estrutura de dados de demonstração sem expor segredos.
+                            Exporte ou importe os dados de licitações e auditoria, ou restaure a base para os dados de demonstração.
                         </p>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <button class="btn btn-secondary" onclick="exportarBackupJSON()">📥 Exportar JSON Seguro</button>
+                            <button class="btn btn-secondary" onclick="exportarBackupJSON()">📥 Exportar JSON</button>
                             <label class="btn btn-secondary" style="cursor: pointer;">
                                 📤 Importar JSON <input type="file" id="file-import-json" accept=".json" onchange="importarBackupJSON(event)" style="display: none;">
                             </label>
-                            <button class="btn btn-secondary" onclick="restaurarDadosIniciaisSeed()">🔄 Restaurar Padrões</button>
-                            <button class="btn btn-danger" onclick="limparTodoLocalStorage()">⚠️ Zerar Armazenamento</button>
+                            <button class="btn btn-danger" onclick="restaurarDadosIniciaisSeed()">🔄 Restaurar Dados Padrão do Banco</button>
                         </div>
                     </div>
                 </section>
@@ -344,13 +335,13 @@
             <div class="modal-body" style="font-size: 0.875rem; line-height: 1.6;">
                 <h4 style="color: var(--primary-dark); margin-bottom: 8px;">1. Finalidade e Transparência</h4>
                 <p style="margin-bottom: 12px;">O Sistema de Licitações (SCL) da Prefeitura Municipal de Goiana destina-se à consulta, acompanhamento e transparência dos processos licitatórios públicos municipais, em conformidade com as leis públicas de transparência e acesso à informação.</p>
-                
+
                 <h4 style="color: var(--primary-dark); margin-bottom: 8px;">2. Responsabilidade pelas Credenciais e Senha</h4>
                 <p style="margin-bottom: 12px;">O usuário é inteiramente responsável pelo sigilo de suas credenciais (e-mail e senha). É proibida a cessão ou compartilhamento de contas. A senha cadastrada deve respeitar a política de segurança (mínimo de 8 caracteres contendo letras maiúsculas, minúsculas, números e símbolos).</p>
-                
+
                 <h4 style="color: var(--primary-dark); margin-bottom: 8px;">3. Níveis de Acesso e Confidencialidade</h4>
                 <p style="margin-bottom: 12px;">O acesso a documentos integrais e peças orçamentárias confidenciais depende do perfil de autorização concedido pela administração pública. A tentativa ilícita de burlar os níveis de restrição sujeitará o infrator às sanções legais.</p>
-                
+
                 <h4 style="color: var(--primary-dark); margin-bottom: 8px;">4. Registros de Auditoria e LGPD</h4>
                 <p style="margin-bottom: 12px;">Todas as operações de autenticação, consulta e alteração no SCL são auditadas e registradas na Trilha de Auditoria (com vinculação de e-mail, data/hora e ação realizada) para garantir a segurança da informação e auditoria de órgãos de controle.</p>
             </div>
@@ -374,7 +365,7 @@
                 <form onsubmit="event.preventDefault(); solicitarRedefinicaoSenha();">
                     <div class="form-group">
                         <label for="reset-email">E-mail Cadastrado</label>
-                        <input type="email" id="reset-email" class="form-control" required maxlength="150" placeholder="seu.email@exemplo.com">
+                        <input type="email" id="reset-email" class="form-control" required placeholder="seu.email@exemplo.com">
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Solicitar Redefinição</button>
                 </form>
@@ -418,7 +409,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lic-num">Número da Licitação</label>
-                            <input type="text" id="lic-num" class="form-control" required maxlength="30" placeholder="Ex: PE-005/2026">
+                            <input type="text" id="lic-num" class="form-control" required placeholder="Ex: PE-005/2026">
                         </div>
                         <div class="form-group">
                             <label for="lic-ano">Ano</label>
@@ -428,7 +419,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lic-processo">Processo Administrativo</label>
-                            <input type="text" id="lic-processo" class="form-control" required maxlength="30" placeholder="Ex: PA-1020/2026">
+                            <input type="text" id="lic-processo" class="form-control" required placeholder="Ex: PA-1020/2026">
                         </div>
                         <div class="form-group">
                             <label for="lic-modalidade">Modalidade</label>
@@ -442,13 +433,12 @@
                     </div>
                     <div class="form-group">
                         <label for="lic-objeto">Objeto Resumido</label>
-                        <textarea id="lic-objeto" class="form-control" rows="2" required maxlength="500" oninput="atualizarContador('lic-objeto', 'contador-lic-objeto')"></textarea>
-                        <div class="password-hint text-right"><span id="contador-lic-objeto">0</span>/500 caracteres</div>
+                        <textarea id="lic-objeto" class="form-control" rows="2" required></textarea>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lic-orgao">Secretaria / Órgão Responsável</label>
-                            <input type="text" id="lic-orgao" class="form-control" required maxlength="150" placeholder="Ex: Secretaria de Saúde">
+                            <input type="text" id="lic-orgao" class="form-control" required placeholder="Ex: Secretaria de Saúde">
                         </div>
                         <div class="form-group">
                             <label for="lic-valor">Valor Estimado (R$)</label>
@@ -486,10 +476,9 @@
                     </div>
                     <div class="form-group">
                         <label for="lic-conteudo">Conteúdo Integral do Documento (Confidencial)</label>
-                        <textarea id="lic-conteudo" class="form-control" rows="4" maxlength="5000" oninput="atualizarContador('lic-conteudo', 'contador-lic-conteudo')" placeholder="Insira o texto integral do edital..."></textarea>
-                        <div class="password-hint text-right"><span id="contador-lic-conteudo">0</span>/5000 caracteres</div>
+                        <textarea id="lic-conteudo" class="form-control" rows="4" placeholder="Insira o texto integral do edital..."></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary" id="btn-salvar-licitacao" style="width: 100%;">Salvar Licitação</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar Licitação</button>
                 </form>
             </div>
         </div>
@@ -507,19 +496,15 @@
                     <input type="hidden" id="usr-id">
                     <div class="form-group">
                         <label for="usr-nome">Nome Completo</label>
-                        <input type="text" id="usr-nome" class="form-control" required maxlength="100">
+                        <input type="text" id="usr-nome" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="usr-email">E-mail</label>
-                        <input type="email" id="usr-email" class="form-control" required maxlength="150">
-                    </div>
-                    <div class="form-group">
-                        <label for="usr-telefone">Telefone (opcional)</label>
-                        <input type="tel" id="usr-telefone" class="form-control" maxlength="15" inputmode="numeric" placeholder="(00) 00000-0000" oninput="aplicarMascaraTelefone(this)">
+                        <input type="email" id="usr-email" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="usr-senha">Senha (deixe em branco para não alterar)</label>
-                        <input type="password" id="usr-senha" class="form-control" maxlength="72" placeholder="••••••••" autocomplete="new-password">
+                        <input type="password" id="usr-senha" class="form-control" placeholder="••••••••" autocomplete="new-password">
                         <div class="password-hint">Ao alterar, exija no mínimo 8 caracteres com letras maiúsculas, minúsculas, números e símbolos.</div>
                     </div>
                     <div class="form-row">
@@ -545,25 +530,12 @@
                             <option value="bloqueado">Bloqueado</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary" id="btn-salvar-usuario" style="width: 100%;">Salvar Alterações</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Salvar Alterações</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Overlay de Carregamento (feedback visual em ações que processam dados) -->
-    <div id="loading-overlay" class="loading-overlay hidden">
-        <div class="loading-box">
-            <div class="loading-spinner"></div>
-            <span id="loading-mensagem">Processando sua solicitação...</span>
-        </div>
-    </div>
-
-    <!-- ==========================================================================
-       JAVASCRIPT REFORÇADO E CLASSIFICADO (SEGURANÇA ELEVADA)
-       ========================================================================== -->
-
-    <script src="../config/config.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
